@@ -15,10 +15,7 @@ namespace CleanArchitecture.MVC.Controllers
             _bookService = bookService;
         }
 
-        public ActionResult<IEnumerable<Book>> GetAll()
-        {
-            return _bookService.GetBooks().ToList();
-        }
+        public ActionResult<IEnumerable<Book>> GetAll() => _bookService.GetBooks().ToList();
 
         public ActionResult<Book> BookDetail(int id) 
         {

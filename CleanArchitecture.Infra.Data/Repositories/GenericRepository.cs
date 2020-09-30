@@ -10,13 +10,13 @@ namespace CleanArchitecture.Infra.Data.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _appDbContext;
         private readonly DbSet<T> dbSet;
 
         public GenericRepository(AppDbContext appDbContext)
         {
-            this._context = appDbContext;
-            this.dbSet = _context.Set<T>();
+            this._appDbContext = appDbContext;
+            this.dbSet = _appDbContext.Set<T>();
         }
 
         public IEnumerable<T> GetAll()

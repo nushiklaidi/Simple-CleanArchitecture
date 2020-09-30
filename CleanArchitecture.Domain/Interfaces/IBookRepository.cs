@@ -5,9 +5,9 @@ using System.Text;
 
 namespace CleanArchitecture.Domain.Interfaces
 {
-    public interface IBookRepository
+    public interface IBookRepository : IGenericRepository<Book>
     {
-        IEnumerable<Book> GetBooks();
-        Book GetBookById(int id);
+        //IEnumerable<Book> GetBooks();
+        //Book GetBookById(int id);
     }
 }

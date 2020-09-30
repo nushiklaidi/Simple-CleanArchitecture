@@ -17,13 +17,13 @@ namespace CleanArchitecture.Application.Services
 
         public Book GetBookById(int id)
         {
-            var getBookById = _bookRepository.GetBookById(id);
+            var getBookById = _bookRepository.GetById(id);
             return getBookById;
         }
 
         public IEnumerable<Book> GetBooks()
         {
-            var model = _bookRepository.GetBooks();
+            var model = _bookRepository.GetAll();
             return model;
         }
     }
