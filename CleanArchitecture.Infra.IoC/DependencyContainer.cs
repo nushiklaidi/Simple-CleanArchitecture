@@ -17,7 +17,10 @@ namespace CleanArchitecture.Infra.IoC
             services.AddScoped<IBookService, BookService>();
 
             //CleanArchitecture.Domain.Interfaces | CleanArchitecture.Infra.Data.Repositories
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IBookRepository, BookRepository>();
+
+            
         }
     }
 }
