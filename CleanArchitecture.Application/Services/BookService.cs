@@ -8,22 +8,23 @@ namespace CleanArchitecture.Application.Services
 {
     public class BookService : IBookService
     {
-        private readonly IBookRepository _bookRepository;
+        //private readonly IBookRepository _bookRepository;
+        private readonly IUnitOfWork _uow;
 
-        public BookService(IBookRepository bookRepository)
+        public BookService(IUnitOfWork uow)
         {
-            _bookRepository = bookRepository;
+            _uow = uow;
         }
 
         public Book GetBookById(int id)
         {
-            var getBookById = _bookRepository.GetById(id);
+            var getBookById = _uow.BookRepository.GetById(id);
             return getBookById;
         }
 
         public IEnumerable<Book> GetBooks()
         {
-            var model = _bookRepository.GetAll();
+            var model = _uow.BookRepository.GetAll();
             return model;
         }
     }

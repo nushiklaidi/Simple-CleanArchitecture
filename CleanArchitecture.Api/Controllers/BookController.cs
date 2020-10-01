@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.Api.Controllers
 {
-    [Route("api/[controller]/[action]/{id}")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BookController : ControllerBase
     {
@@ -28,7 +28,12 @@ namespace CleanArchitecture.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetAll() => Ok(_bookService.GetBooks());
 
-        [HttpGet]
+        /// <summary>
+        /// Get book by id
+        /// </summary>
+        /// <param name="id">The db identifier.</param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetBook(int id) => Ok(_bookService.GetBookById(id));
     }

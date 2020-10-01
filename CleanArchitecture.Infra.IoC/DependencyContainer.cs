@@ -13,6 +13,7 @@ namespace CleanArchitecture.Infra.IoC
     {
         public static void RegisterServices(IServiceCollection services)
         {
+
             //CleanArchitecture.Application
             services.AddScoped<IBookService, BookService>();
 
@@ -20,7 +21,7 @@ namespace CleanArchitecture.Infra.IoC
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IBookRepository, BookRepository>();
 
-            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }
