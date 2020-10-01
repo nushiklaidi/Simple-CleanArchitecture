@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.Intarfaces;
 using CleanArchitecture.Domain.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -47,9 +48,7 @@ namespace CleanArchitecture.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<Book> GetAll()
-        {
-            return _bookService.GetBooks();
-        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetAll() => Ok(_bookService.GetBooks());
     }
 }
