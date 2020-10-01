@@ -25,9 +25,46 @@ namespace CleanArchitecture.Infra.Data.Repositories
             return query;
         }
 
+        public IEnumerable<T> GetAll(string include)
+        {
+            var arrInclude = include.Split(',');
+            return GetQuery(include: arrInclude).ToList<T>();
+        }
+            
         public T GetById(object id)
         {
             return dbSet.Find(id);
+        }
+
+        public void Insert(T entity)
+        {
+            dbSet.Add(entity);
+        }
+
+        public void Update(T entity)
+        {
+            dbSet.Attach(entity);
+            _appDbContext.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void Delete(int id)
+        {
+            T entityToDelete = dbSet.Find(id);
+            Delete(entityToDelete);
+        }
+
+        public void Delete(T entity)
+        {
+            dbSet.Remove(entity);
+        }
+
+        protected virtual IQueryable<T> GetQuery(string[] include)
+        {
+            IQueryable<T> query = dbSet;
+
+            foreach (var includeProperty in include)
+                query = query.Include(includeProperty);
+            return query;
         }
     }
 }

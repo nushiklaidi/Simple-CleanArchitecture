@@ -8,7 +8,6 @@ namespace CleanArchitecture.Application.Services
 {
     public class BookService : IBookService
     {
-        //private readonly IBookRepository _bookRepository;
         private readonly IUnitOfWork _uow;
 
         public BookService(IUnitOfWork uow)
