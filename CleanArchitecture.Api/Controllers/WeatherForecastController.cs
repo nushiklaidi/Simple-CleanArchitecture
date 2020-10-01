@@ -42,6 +42,10 @@ namespace CleanArchitecture.Api.Controllers
             .ToArray();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<Book> GetAll()
         {
