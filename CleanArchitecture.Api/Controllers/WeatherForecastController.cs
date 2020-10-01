@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace CleanArchitecture.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -45,7 +45,7 @@ namespace CleanArchitecture.Api.Controllers
         [HttpGet]
         public IEnumerable<Book> GetAll()
         {
-            return Ok(_bookService.GetBooks();
+            return _bookService.GetBooks();
         }
     }
 }
