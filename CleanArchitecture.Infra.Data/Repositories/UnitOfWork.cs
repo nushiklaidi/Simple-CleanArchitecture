@@ -3,6 +3,7 @@ using CleanArchitecture.Infra.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infra.Data.Repositories
 {
@@ -10,15 +11,24 @@ namespace CleanArchitecture.Infra.Data.Repositories
     {
         private readonly AppDbContext _appDbContext;
 
-        #region Private Repository
         public IBookRepository _bookRepository { get; private set; }
-        #endregion
-
+        
         public UnitOfWork(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
 
+        public int SaveChanges()
+        {
+            return _appDbContext.SaveChanges();
+        }
+
+        public Task<int> SavechangesAsync()
+        {
+            return _appDbContext.SaveChangesAsync();
+        }
+
         public IBookRepository BookRepository => _bookRepository = _bookRepository ?? new BookRepository(_appDbContext);
+        
     }
 }
