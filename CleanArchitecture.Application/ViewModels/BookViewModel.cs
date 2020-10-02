@@ -1,12 +1,12 @@
-﻿using CleanArchitecture.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace CleanArchitecture.Application.ViewModels
 {
     public class BookViewModel
     {
-        public IEnumerable<Book> Books { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ISBN { get; set; }
+        public string AuthorName { get; set; }
+        public bool Active { get; set; }
     }
 }

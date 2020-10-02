@@ -1,5 +1,7 @@
 ﻿
 using CleanArchitecture.Application.Intarfaces;
+using CleanArchitecture.Application.ViewModels;
+using CleanArchitecture.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,9 +43,9 @@ namespace CleanArchitecture.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Activate(int id, bool active)
+        public IActionResult Activate(BookViewModel model)
         {
-            _bookService.Activate(bookId: id, active: active);
+            _bookService.Activate(bookId: model.Id, active: model.Active);
             return Ok();
         }
     }
