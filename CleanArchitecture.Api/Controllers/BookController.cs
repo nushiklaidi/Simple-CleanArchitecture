@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using CleanArchitecture.Application.Intarfaces;
-using CleanArchitecture.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,5 +32,19 @@ namespace CleanArchitecture.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetBook(int id) => Ok(_bookService.GetBookById(id));
+
+        /// <summary>
+        /// Active or Deactive book
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="active"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Activate(int id, bool active)
+        {
+            _bookService.Activate(bookId: id, active: active);
+            return Ok();
+        }
     }
 }
