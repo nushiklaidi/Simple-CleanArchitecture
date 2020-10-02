@@ -10,5 +10,7 @@ namespace CleanArchitecture.Application.Intarfaces
     {
         IEnumerable<Book> GetBooks();
         Book GetBookById(int id);
+        void Delete(int id);
+        void Activate(int bookId, bool active);
     }
 }

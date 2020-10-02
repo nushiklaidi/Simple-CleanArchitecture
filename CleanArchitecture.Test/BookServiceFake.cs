@@ -30,6 +30,16 @@ namespace CleanArchitecture.Test
             };
         }
 
+        public void Activate(int bookId, bool active)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Delete(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Book GetBookById(int id)
         {
             var getBookById = _books.Where(b => b.Id == id);

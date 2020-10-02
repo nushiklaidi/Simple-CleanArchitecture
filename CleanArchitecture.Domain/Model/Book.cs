@@ -10,5 +10,6 @@ namespace CleanArchitecture.Domain.Model
         public string Name { get; set; }
         public string ISBN { get; set; }
         public string AuthorName { get; set; }
+        public bool Active { get; set; }
     }
 }

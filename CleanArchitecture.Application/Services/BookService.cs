@@ -2,7 +2,6 @@
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Model;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CleanArchitecture.Application.Services
 {
@@ -24,6 +23,25 @@ namespace CleanArchitecture.Application.Services
         public IEnumerable<Book> GetBooks()
         {
             var model = _uow.BookRepository.GetAll();
+            return model;
+        }
+        public void Delete(int id)
+        {
+            var model = Find(id);
+            _uow.BookRepository.Delete(model);
+            _uow.SaveChanges();
+        }
+               
+        public void Activate(int bookId, bool active)
+        {
+            var model = Find(bookId);
+            model.Active = active;
+            _uow.SaveChanges();
+        }
+
+        private Book Find(int id)
+        {
+            var model = _uow.BookRepository.GetById(id);
             return model;
         }
     }
