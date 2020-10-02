@@ -1,3 +1,4 @@
+using CleanArchitecture.Api.Options;
 using CleanArchitecture.Infra.Data.Context;
 using CleanArchitecture.Infra.IoC;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 namespace CleanArchitecture.Api
@@ -32,7 +34,10 @@ namespace CleanArchitecture.Api
                 o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
             services.AddCors();
-
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new OpenApiInfo{ Title = "Your API", Version = "v1" });
+            });
 
             RegisterServices(services);
         }
@@ -45,7 +50,16 @@ namespace CleanArchitecture.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+            app.UseSwagger();
+            app.UseSwaggerUI(option => 
+            { 
+                option.SwaggerEndpoint(swaggerOptions.JsonRoute, swaggerOptions.Description); 
+            });
+
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
