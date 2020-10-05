@@ -24,22 +24,45 @@ namespace CleanArchitecture.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Register DbContext
+
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            #endregion
+
+            #region Register Controller
+
             services.AddControllers().AddNewtonsoftJson(o =>
             {
                 o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
+
+            #endregion
+
+            #region Register CORS
+
             services.AddCors();
+
+            #endregion
+
+            #region Register Swagger
+
             services.AddSwaggerGen(x =>
             {
-                x.SwaggerDoc("v1", new OpenApiInfo{ Title = "Your API", Version = "v1" });
+                x.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
             });
 
+            #endregion
+
+            #region Register Dependency
+
             RegisterServices(services);
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
