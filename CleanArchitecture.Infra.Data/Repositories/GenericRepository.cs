@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace CleanArchitecture.Infra.Data.Repositories
@@ -12,6 +13,9 @@ namespace CleanArchitecture.Infra.Data.Repositories
     {
         private readonly AppDbContext _appDbContext;
         private readonly DbSet<T> dbSet;
+        private int _totalNumberOfQueryRecords = 0;
+
+        public int TotalNumberOfQueryRecords { get { return _totalNumberOfQueryRecords; } }
 
         public GenericRepository(AppDbContext appDbContext)
         {
@@ -25,12 +29,46 @@ namespace CleanArchitecture.Infra.Data.Repositories
             return query;
         }
 
-        public IEnumerable<T> GetAll(string include)
+        public IEnumerable<T> GetAll(string includeProperties)
         {
-            var arrInclude = include.Split(',');
-            return GetQuery(include: arrInclude).ToList<T>();
+            if (!string.IsNullOrWhiteSpace(includeProperties))
+            {
+                var arrProperties = includeProperties.Split(',');
+                return GetQuery(includeProperties: arrProperties).ToList<T>();
+            }
+            else
+            {
+                List<T> query = dbSet.ToList<T>();
+                return query;
+            }
         }
-            
+
+        public virtual IEnumerable<T> Get(
+            Expression<Func<T, bool>> filter,
+            string[] includeProperties,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            int? pageNumber = null,
+            int? recordsPerPage = null,
+            bool GetRowCount = false
+            )
+        {
+            return GetQuery(filter, includeProperties, orderBy, pageNumber, recordsPerPage, GetRowCount).ToList();
+        }
+
+        public virtual IEnumerable<T> Get(
+           Expression<Func<T, bool>> filter,
+           string includeProperties = "",
+           Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+           int? pageNumber = null,
+           int? recordsPerPage = null,
+           bool GetRowCount = false
+           )
+        {
+
+            var properties = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            return Get(filter, properties, orderBy, pageNumber, recordsPerPage, GetRowCount).ToList();
+        }
+
         public T GetById(object id)
         {
             return dbSet.Find(id);
@@ -58,12 +96,37 @@ namespace CleanArchitecture.Infra.Data.Repositories
             dbSet.Remove(entity);
         }
 
-        protected virtual IQueryable<T> GetQuery(string[] include)
+        protected virtual IQueryable<T> GetQuery(
+              Expression<Func<T, bool>> filter = null,
+              string[] includeProperties = null,
+              Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+              int? pageNumber = null,
+              int? recordsPerPage = null,
+              bool GetRowCount = false
+              )
         {
             IQueryable<T> query = dbSet;
-
-            foreach (var includeProperty in include)
+            if (filter != null)
+                query = query.Where(filter);
+            //Warning: Very expensive operation!!!
+            if (GetRowCount)
+            {
+                IQueryable<T> queryCount = query;
+                _totalNumberOfQueryRecords = queryCount.Count();
+            }
+            else
+                _totalNumberOfQueryRecords = -1;
+            //Included properties
+            foreach (var includeProperty in includeProperties)
                 query = query.Include(includeProperty);
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+                //Skip supported only to sorted rows
+                if (pageNumber != null && recordsPerPage != null)
+                    query = query.Skip((pageNumber.Value - 1) * recordsPerPage.Value).Take(recordsPerPage.Value);
+            }
             return query;
         }
     }
