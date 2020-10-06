@@ -1,14 +1,17 @@
 using CleanArchitecture.Api.Options;
 using CleanArchitecture.Infra.Data.Context;
 using CleanArchitecture.Infra.IoC;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace CleanArchitecture.Api
 {
@@ -63,6 +66,21 @@ namespace CleanArchitecture.Api
             RegisterServices(services);
 
             #endregion
+
+            #region Register Jwt
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options => {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    });
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,6 +104,7 @@ namespace CleanArchitecture.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
