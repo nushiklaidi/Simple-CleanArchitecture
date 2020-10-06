@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CleanArchitecture.Domain.Interfaces
 {
-    public interface IBookRepository : IGenericRepository<Book>
+    public interface IUserRepository : IGenericRepository<User>
     {
     }
 }
