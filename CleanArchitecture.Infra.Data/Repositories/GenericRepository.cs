@@ -43,30 +43,15 @@ namespace CleanArchitecture.Infra.Data.Repositories
             }
         }
 
-        public virtual IEnumerable<T> Get(
-            Expression<Func<T, bool>> filter,
-            string[] includeProperties,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            int? pageNumber = null,
-            int? recordsPerPage = null,
-            bool GetRowCount = false
-            )
+        public virtual IEnumerable<T> Get(Expression<Func<T, bool>> filter, string[] includeProperties)
         {
-            return GetQuery(filter, includeProperties, orderBy, pageNumber, recordsPerPage, GetRowCount).ToList();
+            return GetQuery(filter, includeProperties).ToList();
         }
 
-        public virtual IEnumerable<T> Get(
-           Expression<Func<T, bool>> filter,
-           string includeProperties = "",
-           Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-           int? pageNumber = null,
-           int? recordsPerPage = null,
-           bool GetRowCount = false
-           )
+        public virtual IEnumerable<T> Get(Expression<Func<T, bool>> filter, string includeProperties = "")
         {
-
             var properties = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            return Get(filter, properties, orderBy, pageNumber, recordsPerPage, GetRowCount).ToList();
+            return Get(filter, properties).ToList();
         }
 
         public T GetById(object id)
