@@ -16,28 +16,5 @@ namespace CleanArchitecture.Application.Services
         {
             _uow = uow;
         }
-
-        public User Register(User user, string password)
-        {
-            byte[] passwordHash, passwordSalt;
-            CreatePassWordHash(password, out passwordHash, out passwordSalt);
-
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-
-            _uow.UserRepository.Insert(user);
-            _uow.SaveChanges();
-
-            return user;
-        }
-
-        private void CreatePassWordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
     }
 }

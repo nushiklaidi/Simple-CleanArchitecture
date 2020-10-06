@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArchitecture.Domain.Model
 {
@@ -8,9 +6,11 @@ namespace CleanArchitecture.Domain.Model
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
+        public string Password { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
+        public string Role { get; set; }
+        [NotMapped]
+        public string Token { get; set; }
     }
 }
