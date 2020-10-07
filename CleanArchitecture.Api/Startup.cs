@@ -1,4 +1,4 @@
-using CleanArchitecture.Api.Options;
+using CleanArchitecture.Application.AppOptions;
 using CleanArchitecture.Infra.Data.Context;
 using CleanArchitecture.Infra.IoC;
 using Microsoft.AspNetCore.Builder;
@@ -7,10 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
 
 namespace CleanArchitecture.Api
 {
@@ -78,8 +75,8 @@ namespace CleanArchitecture.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            var swaggerOptions = new SwaggerOptions();
-            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+            var swaggerOptions = new SwaggerSettings();
+            Configuration.GetSection(nameof(SwaggerSettings)).Bind(swaggerOptions);
             app.UseSwagger();
             app.UseSwaggerUI(option => 
             { 

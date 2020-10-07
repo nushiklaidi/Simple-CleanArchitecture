@@ -1,16 +1,14 @@
-﻿using CleanArchitecture.Application.Intarfaces;
+﻿using CleanArchitecture.Application.AppOptions;
+using CleanArchitecture.Application.Intarfaces;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Model;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Services
 {
@@ -18,6 +16,7 @@ namespace CleanArchitecture.Application.Services
     {
         private readonly IUnitOfWork _uow;
         private readonly AppSettings _appSettings;
+
         public AuthService(IUnitOfWork uow, IOptions<AppSettings> appSettings)
         {
             _uow = uow;

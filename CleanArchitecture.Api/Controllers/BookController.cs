@@ -1,7 +1,5 @@
-﻿
-using CleanArchitecture.Application.Intarfaces;
+﻿using CleanArchitecture.Application.Intarfaces;
 using CleanArchitecture.Application.ViewModels;
-using CleanArchitecture.Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

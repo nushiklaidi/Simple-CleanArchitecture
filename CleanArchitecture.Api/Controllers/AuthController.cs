@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Intarfaces;
 using CleanArchitecture.Domain.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.Api.Controllers
@@ -15,7 +16,13 @@ namespace CleanArchitecture.Api.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Authanticate User
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Authenticate(User model)
         {
             var user = _authService.Authenticate(model.Username, model.Password);
