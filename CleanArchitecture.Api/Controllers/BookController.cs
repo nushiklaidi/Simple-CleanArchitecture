@@ -8,7 +8,7 @@ namespace CleanArchitecture.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
