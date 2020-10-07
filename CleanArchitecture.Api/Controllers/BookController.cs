@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Intarfaces;
+using CleanArchitecture.Application.Model;
 using CleanArchitecture.Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,7 @@ namespace CleanArchitecture.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = AppConst.Role.AdminRole)]
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
