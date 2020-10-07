@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Intarfaces;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace CleanArchitecture.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Authenticate(User model)
+        public IActionResult Authenticate(AuthViewModel model)
         {
             var user = _authService.Authenticate(model.Username, model.Password);
             if (user == null)
