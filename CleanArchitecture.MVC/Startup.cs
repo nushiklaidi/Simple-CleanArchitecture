@@ -70,7 +70,7 @@ namespace CleanArchitecture.MVC
 
         private static void RegisterServices(IServiceCollection services)
         {
-            DependencyContainer.RegisterServices(services);
+            DependencyContainerConfig.RegisterServices(services);
         }
     }
 }

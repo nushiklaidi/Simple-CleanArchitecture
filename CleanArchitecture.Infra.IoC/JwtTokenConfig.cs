@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CleanArchitecture.Infra.IoC
 {
-    public static class JwtToken
+    public static class JwtTokenConfig
     {
         public static void RegisterJwt(IServiceCollection services, IConfiguration configuration)
         {

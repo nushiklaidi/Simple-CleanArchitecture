@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Infra.IoC
 {
-    public static class DependencyContainer
+    public static class DependencyContainerConfig
     {
         public static void RegisterServices(IServiceCollection services)
         {
