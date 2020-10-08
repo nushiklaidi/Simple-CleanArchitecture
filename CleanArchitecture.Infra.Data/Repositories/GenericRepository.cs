@@ -75,10 +75,10 @@ namespace CleanArchitecture.Infra.Data.Repositories
             await Delete(entityToDelete);
         }
 
-        public Task Delete(T entity)
+        public async Task Delete(T entity)
         {
              dbSet.Remove(entity);
-             return _appDbContext.SaveChangesAsync();
+             await _appDbContext.SaveChangesAsync();
         }
 
         protected virtual IQueryable<T> GetQuery(Expression<Func<T, bool>> filter = null, string[] includeProperties = null)
