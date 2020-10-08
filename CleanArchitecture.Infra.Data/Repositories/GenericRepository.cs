@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infra.Data.Repositories
 {
@@ -13,9 +14,6 @@ namespace CleanArchitecture.Infra.Data.Repositories
     {
         private readonly AppDbContext _appDbContext;
         private readonly DbSet<T> dbSet;
-        private int _totalNumberOfQueryRecords = 0;
-
-        public int TotalNumberOfQueryRecords { get { return _totalNumberOfQueryRecords; } }
 
         public GenericRepository(AppDbContext appDbContext)
         {
@@ -23,22 +21,22 @@ namespace CleanArchitecture.Infra.Data.Repositories
             this.dbSet = _appDbContext.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            List<T> query = dbSet.ToList<T>();
+            List<T> query = await dbSet.ToListAsync<T>();
             return query;
         }
 
-        public IEnumerable<T> GetAll(string includeProperties)
+        public async Task<IEnumerable<T>> GetAll(string includeProperties)
         {
             if (!string.IsNullOrWhiteSpace(includeProperties))
             {
                 var arrProperties = includeProperties.Split(',');
-                return GetQuery(includeProperties: arrProperties).ToList<T>();
+                return await GetQuery(includeProperties: arrProperties).ToListAsync<T>();
             }
             else
             {
-                List<T> query = dbSet.ToList<T>();
+                List<T> query = await dbSet.ToListAsync<T>();
                 return query;
             }
         }
@@ -51,67 +49,46 @@ namespace CleanArchitecture.Infra.Data.Repositories
         public virtual IEnumerable<T> Get(Expression<Func<T, bool>> filter, string includeProperties = "")
         {
             var properties = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            return Get(filter, properties).ToList();
+            return Get(filter, properties);
         }
 
-        public T GetById(object id)
+        public async Task<T> GetById(object id)
         {
-            return dbSet.Find(id);
+            return await dbSet.FindAsync(id);
         }
 
-        public void Insert(T entity)
+        public async Task Insert(T entity)
         {
-            dbSet.Add(entity);
+            await dbSet.AddAsync(entity);
         }
 
-        public void Update(T entity)
+        public async Task Update(T entity)
         {
-            dbSet.Attach(entity);
+             dbSet.Attach(entity);
             _appDbContext.Entry(entity).State = EntityState.Modified;
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            T entityToDelete = dbSet.Find(id);
-            Delete(entityToDelete);
+            T entityToDelete = await dbSet.FindAsync(id);
+            await Delete(entityToDelete);
         }
 
-        public void Delete(T entity)
+        public Task Delete(T entity)
         {
-            dbSet.Remove(entity);
+             dbSet.Remove(entity);
+             return _appDbContext.SaveChangesAsync();
         }
 
-        protected virtual IQueryable<T> GetQuery(
-              Expression<Func<T, bool>> filter = null,
-              string[] includeProperties = null,
-              Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-              int? pageNumber = null,
-              int? recordsPerPage = null,
-              bool GetRowCount = false
-              )
+        protected virtual IQueryable<T> GetQuery(Expression<Func<T, bool>> filter = null, string[] includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             if (filter != null)
-                query = query.Where(filter);
-            //Warning: Very expensive operation!!!
-            if (GetRowCount)
-            {
-                IQueryable<T> queryCount = query;
-                _totalNumberOfQueryRecords = queryCount.Count();
-            }
-            else
-                _totalNumberOfQueryRecords = -1;
+                query = query.Where(filter);            
             //Included properties
             foreach (var includeProperty in includeProperties)
                 query = query.Include(includeProperty);
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-                //Skip supported only to sorted rows
-                if (pageNumber != null && recordsPerPage != null)
-                    query = query.Skip((pageNumber.Value - 1) * recordsPerPage.Value).Take(recordsPerPage.Value);
-            }
             return query;
         }
     }

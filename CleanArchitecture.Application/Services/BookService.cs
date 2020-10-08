@@ -2,6 +2,7 @@
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Model;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Services
 {
@@ -14,35 +15,31 @@ namespace CleanArchitecture.Application.Services
             _uow = uow;
         }
 
-        public Book GetBookById(int id)
+        public async Task<Book> GetBookById(int id)
         {
-            var getBookById = _uow.BookRepository.GetById(id);
-            return getBookById;
+            return await Find(id);
         }
 
-        public IEnumerable<Book> GetBooks()
+        public async Task<IEnumerable<Book>> GetBooks()
         {
-            var model = _uow.BookRepository.GetAll();
-            return model;
+            return await _uow.BookRepository.GetAll();
         }
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var model = Find(id);
-            _uow.BookRepository.Delete(model);
-            _uow.SaveChanges();
+            var model = await Find(id);
+            await _uow.BookRepository.Delete(model);
         }
                
-        public void Activate(int bookId, bool active)
+        public async Task Activate(int bookId, bool active)
         {
-            var model = Find(bookId);
+            var model = await Find(bookId);
             model.Active = active;
-            _uow.SaveChanges();
+            await _uow.SavechangesAsync();
         }
 
-        private Book Find(int id)
+        private async Task<Book> Find(int id)
         {
-            var model = _uow.BookRepository.GetById(id);
-            return model;
+            return await _uow.BookRepository.GetById(id);
         }
     }
 }

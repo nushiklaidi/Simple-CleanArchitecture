@@ -1,16 +1,14 @@
-﻿using CleanArchitecture.Application.ViewModels;
-using CleanArchitecture.Domain.Model;
-using System;
+﻿using CleanArchitecture.Domain.Model;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Intarfaces
 {
     public interface IBookService
     {
-        IEnumerable<Book> GetBooks();
-        Book GetBookById(int id);
-        void Delete(int id);
-        void Activate(int bookId, bool active);
+        Task<IEnumerable<Book>> GetBooks();
+        Task<Book> GetBookById(int id);
+        Task Delete(int id);
+        Task Activate(int bookId, bool active);
     }
 }

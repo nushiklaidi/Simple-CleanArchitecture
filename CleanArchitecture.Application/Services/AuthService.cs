@@ -5,10 +5,12 @@ using CleanArchitecture.Domain.Model;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Services
 {
@@ -24,9 +26,8 @@ namespace CleanArchitecture.Application.Services
         }
 
         public User Authenticate(string username, string password)
-        {     
+        {
             var user = _uow.UserRepository.Get(filter: u => u.Username == username && u.Password == password).FirstOrDefault();
-
             if (user == null)
             {
                 return null;
@@ -37,7 +38,7 @@ namespace CleanArchitecture.Application.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Name.ToString()),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
