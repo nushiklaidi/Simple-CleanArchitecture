@@ -10,12 +10,22 @@ namespace CleanArchitecture.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        #region Properties
+
         private readonly IAuthService _authService;
+
+        #endregion
+
+        #region Constructor
 
         public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Authanticate User
@@ -28,10 +38,11 @@ namespace CleanArchitecture.Api.Controllers
         {
             var user = _authService.Authenticate(model.Username, model.Password);
             if (user == null)
-            {
-                return BadRequest(new { message = "Username or Password is incorect"});
-            }
+                return BadRequest(new { message = "Username or Password is incorect" });
             return Ok(user);
         }
+
+        #endregion
+
     }
 }

@@ -4,6 +4,7 @@ using CleanArchitecture.Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Api.Controllers
 {
@@ -12,12 +13,22 @@ namespace CleanArchitecture.Api.Controllers
     [Authorize(Roles = AppConst.Role.AdminRole)]
     public class BookController : ControllerBase
     {
+        #region Properties
+
         private readonly IBookService _bookService;
+
+        #endregion
+
+        #region Contructor
 
         public BookController(IBookService bookService)
         {
             _bookService = bookService;
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Get all books
@@ -25,7 +36,7 @@ namespace CleanArchitecture.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetAll() => Ok(_bookService.GetBooks());
+        public async Task<IActionResult> GetAll() => Ok(await _bookService.GetBooks());
 
         /// <summary>
         /// Get book by id
@@ -34,7 +45,13 @@ namespace CleanArchitecture.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetBook(int id) => Ok(_bookService.GetBookById(id));
+        public async Task<IActionResult> GetBook(int id)
+        {
+            var book = await _bookService.GetBookById(id);
+            if (book == null)
+                return BadRequest(new { message = "The Id doesn't exist" });
+            return Ok(book);
+        }
 
         /// <summary>
         /// Active or Deactive book
@@ -44,10 +61,15 @@ namespace CleanArchitecture.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Activate(BookViewModel model)
+        public async Task<IActionResult> Activate(BookViewModel model)
         {
-            _bookService.Activate(bookId: model.Id, active: model.Active);
+            if(model == null)
+                return BadRequest(new { message = "The object is null" });
+            await _bookService.Activate(bookId: model.Id, active: model.Active);
             return Ok();
         }
+
+        #endregion
+
     }
 }
