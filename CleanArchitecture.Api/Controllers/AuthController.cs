@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Intarfaces;
+using CleanArchitecture.Application.Validation;
 using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Domain.Model;
 using Microsoft.AspNetCore.Http;
@@ -36,10 +37,17 @@ namespace CleanArchitecture.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Authenticate(AuthViewModel model)
         {
-            var user = _authService.Authenticate(model.Username, model.Password);
-            if (user == null)
-                return BadRequest(new { message = "Username or Password is incorect" });
-            return Ok(user);
+            var val = new AuthViewModelVal();
+            var result = val.Validate(model);
+
+            if (result.IsValid)
+            {
+                var user = _authService.Authenticate(model.Username, model.Password);
+                if (user == null)
+                    return BadRequest(new { message = "Username or Password is incorect" });
+                return Ok(user);
+            }
+            return BadRequest(result.Errors);
         }
 
         #endregion
