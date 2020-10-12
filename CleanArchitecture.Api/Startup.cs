@@ -1,11 +1,9 @@
 using CleanArchitecture.Application.AppOptions;
-using CleanArchitecture.Application.Validation;
 using CleanArchitecture.Infra.Data.Context;
 using CleanArchitecture.Infra.IoC;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

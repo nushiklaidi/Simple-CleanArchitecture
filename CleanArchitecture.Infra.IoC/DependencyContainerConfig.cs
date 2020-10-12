@@ -1,7 +1,10 @@
 ﻿using CleanArchitecture.Application.Intarfaces;
 using CleanArchitecture.Application.Services;
+using CleanArchitecture.Application.Validation;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Infra.Data.Repositories;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Infra.IoC
@@ -20,8 +23,11 @@ namespace CleanArchitecture.Infra.IoC
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
-            ////CleanArchitecture.Domain.Interfaces | CleanArchitecture.Infra.Data.Repositories
+            //CleanArchitecture.Domain.Interfaces | CleanArchitecture.Infra.Data.Repositories
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //Validator
+            services.AddTransient<IValidator<AuthViewModel>, AuthViewModelVal>();
         }
     }
 }
