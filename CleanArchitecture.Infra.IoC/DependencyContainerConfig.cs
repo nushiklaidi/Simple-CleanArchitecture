@@ -8,7 +8,7 @@ namespace CleanArchitecture.Infra.IoC
 {
     public static class DependencyContainerConfig
     {
-        public static void RegisterServices(IServiceCollection services)
+        public static void RegisterServices(this IServiceCollection services)
         {
 
             //CleanArchitecture.Application

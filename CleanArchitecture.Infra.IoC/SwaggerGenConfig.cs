@@ -5,7 +5,7 @@ namespace CleanArchitecture.Infra.IoC
 {
     public static class SwaggerGenConfig
     {
-        public static void RegisterSwagger(IServiceCollection services)
+        public static void RegisterSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(x =>
             {

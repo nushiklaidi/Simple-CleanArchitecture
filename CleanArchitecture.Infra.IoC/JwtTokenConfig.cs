@@ -9,7 +9,7 @@ namespace CleanArchitecture.Infra.IoC
 {
     public static class JwtTokenConfig
     {
-        public static void RegisterJwt(IServiceCollection services, IConfiguration configuration)
+        public static void RegisterJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);

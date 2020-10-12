@@ -58,19 +58,19 @@ namespace CleanArchitecture.Api
 
             #region Register Swagger
 
-            RegisterSwagger(services);
+            services.RegisterSwagger();
 
             #endregion
 
             #region Register Dependency
 
-            RegisterServices(services);
+            services.RegisterServices();
 
             #endregion
 
             #region Register Jwt
 
-            RegisterJwt(services, Configuration);
+            services.RegisterJwt(Configuration);
 
             #endregion
         }               
@@ -107,21 +107,6 @@ namespace CleanArchitecture.Api
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapControllers();
             });
-        }
-
-        private static void RegisterServices(IServiceCollection services)
-        {
-            DependencyContainerConfig.RegisterServices(services);
-        }
-
-        private void RegisterJwt(IServiceCollection services, IConfiguration configuration)
-        {
-            JwtTokenConfig.RegisterJwt(services, configuration);
-        }
-
-        private void RegisterSwagger(IServiceCollection services)
-        {
-            SwaggerGenConfig.RegisterSwagger(services);
         }
     }
 }
