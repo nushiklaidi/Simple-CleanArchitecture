@@ -3,6 +3,7 @@ using CleanArchitecture.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.MVC.Controllers
 {
@@ -15,11 +16,16 @@ namespace CleanArchitecture.MVC.Controllers
             _bookService = bookService;
         }
 
-        public ActionResult<IEnumerable<Book>> GetAll() => _bookService.GetBooks().ToList();
-
-        public ActionResult<Book> BookDetail(int id) 
+        public async Task<IActionResult> GetAll()
         {
-            return _bookService.GetBookById(id);
+            var model = await _bookService.GetBooks();
+            return View(model);
+        }
+
+        public async Task<IActionResult> BookDetail(int id) 
+        {
+            var model = await _bookService.GetBookById(id);
+            return View(model);
         }
     }
 }
