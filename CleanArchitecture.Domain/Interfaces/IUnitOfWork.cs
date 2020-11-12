@@ -10,7 +10,6 @@ namespace CleanArchitecture.Domain.Interfaces
         int SaveChanges();
         Task<int> SavechangesAsync();
 
-        IBookRepository BookRepository { get; }
         IUserRepository UserRepository { get; }
     }
 }

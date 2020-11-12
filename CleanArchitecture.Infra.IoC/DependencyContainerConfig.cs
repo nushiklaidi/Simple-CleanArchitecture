@@ -15,12 +15,10 @@ namespace CleanArchitecture.Infra.IoC
         {
 
             //CleanArchitecture.Application
-            services.AddScoped<IBookService, BookService>();
             services.AddScoped<IAuthService, AuthService>();
 
             //CleanArchitecture.Domain.Interfaces | CleanArchitecture.Infra.Data.Repositories
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             //CleanArchitecture.Domain.Interfaces | CleanArchitecture.Infra.Data.Repositories

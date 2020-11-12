@@ -11,7 +11,6 @@ namespace CleanArchitecture.Infra.Data.Repositories
     {
         private readonly AppDbContext _appDbContext;
 
-        public IBookRepository _bookRepository { get; private set; }
         public IUserRepository _userRepository { get; private set; }
         
         public UnitOfWork(AppDbContext appDbContext)
@@ -29,7 +28,6 @@ namespace CleanArchitecture.Infra.Data.Repositories
             return _appDbContext.SaveChangesAsync();
         }
 
-        public IBookRepository BookRepository => _bookRepository = _bookRepository ?? new BookRepository(_appDbContext);
         public IUserRepository UserRepository => _userRepository = _userRepository ?? new UserRepository(_appDbContext);     
     }
 }
